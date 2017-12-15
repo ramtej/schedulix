@@ -62,6 +62,7 @@ public class SDMSTransaction
 	public Stack lockStack = new Stack();
 	public HashMap privCache = new HashMap();
 	public Vector resourceRequestList = null;
+	public HashMap sortKeyMap = null;
 
 	public    long    txId;
 	public    int     mode;
@@ -176,7 +177,7 @@ public class SDMSTransaction
 		throws SQLException, SDMSException
 	{
 		if (traceSubTx)
-			SDMSThread.doTrace(null, "Commiting or rolling back Transaction", SDMSThread.SEVERITY_ERROR);
+			SDMSThread.doTrace(null, (isCommit ? "Commiting" : "Rolling back") + " Transaction [" + txId + "/" + subTxId + "]", SDMSThread.SEVERITY_ERROR);
 		if (isCommit) {
 			if(subTxId != 0) {
 				throw new FatalException (new SDMSMessage (env, "02110301918",
@@ -193,7 +194,7 @@ public class SDMSTransaction
 					"*** This might compromise our database                            ***\n" +
 					"***                                                               ***\n" +
 					"*********************************************************************\n" +
-					"*********************************************************************\n" ,
+					"*********************************************************************\n",
 					SDMSThread.SEVERITY_ERROR
 					);
 				}
@@ -413,6 +414,26 @@ public class SDMSTransaction
 		);
 		return rc;
 	}
+
+	private static int dmpctr = 0;
+	public void dumpTouchList(SystemEnvironment sysEnv, String msg)
+	throws SDMSException
+	{
+		dmpctr++;
+		if (touchList == null) {
+			System.out.println("[" + dmpctr + "] START: " + msg);
+			System.out.println("[" + dmpctr + "] END: " + msg);
+			return;
+		}
+		System.out.println("[" + dmpctr + "] START: " + msg);
+		System.out.println(this.toString());
+		Iterator i = touchList.iterator();
+		while (i.hasNext()) {
+			SDMSChangeListElement changeListElement = (SDMSChangeListElement) i.next();
+			System.out.println(changeListElement.toString());
+		}
+		System.out.println("[" + dmpctr + "] END: " + msg);
+	}
 }
 
 class TxCounter
@@ -482,7 +503,6 @@ class TxCounter
 					j++;
 				}
 			}
-
 			Arrays.sort(result);
 		} else {
 			result = new long[1];

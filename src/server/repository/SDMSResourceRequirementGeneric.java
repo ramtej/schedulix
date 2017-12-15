@@ -65,12 +65,13 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 	public final static int nr_rsmpId = 9;
 	public final static int nr_expiredAmount = 10;
 	public final static int nr_expiredBase = 11;
-	public final static int nr_lockmode = 12;
-	public final static int nr_condition = 13;
-	public final static int nr_creatorUId = 14;
-	public final static int nr_createTs = 15;
-	public final static int nr_changerUId = 16;
-	public final static int nr_changeTs = 17;
+	public final static int nr_ignoreOnRerun = 12;
+	public final static int nr_lockmode = 13;
+	public final static int nr_condition = 14;
+	public final static int nr_creatorUId = 15;
+	public final static int nr_createTs = 16;
+	public final static int nr_changerUId = 17;
+	public final static int nr_changeTs = 18;
 
 	public static String tableName = SDMSResourceRequirementTableGeneric.tableName;
 
@@ -84,6 +85,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 	protected Long rsmpId;
 	protected Integer expiredAmount;
 	protected Integer expiredBase;
+	protected Boolean ignoreOnRerun;
 	protected Integer lockmode;
 	protected String condition;
 	protected Long creatorUId;
@@ -107,6 +109,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 	        Long p_rsmpId,
 	        Integer p_expiredAmount,
 	        Integer p_expiredBase,
+	        Boolean p_ignoreOnRerun,
 	        Integer p_lockmode,
 	        String p_condition,
 	        Long p_creatorUId,
@@ -133,6 +136,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 		rsmpId = p_rsmpId;
 		expiredAmount = p_expiredAmount;
 		expiredBase = p_expiredBase;
+		ignoreOnRerun = p_ignoreOnRerun;
 		lockmode = p_lockmode;
 		if (p_condition != null && p_condition.length() > 1024) {
 			throw new CommonErrorException (
@@ -226,7 +230,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.amount = p_amount;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -268,7 +272,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.keepMode = p_keepMode;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -292,7 +296,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.isSticky = p_isSticky;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -317,7 +321,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		if (p_stickyName != null && p_stickyName.length() > 64) {
 			throw new CommonErrorException (
 			        new SDMSMessage(env, "01112141510",
@@ -348,7 +352,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.stickyParent = p_stickyParent;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -405,7 +409,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.expiredAmount = p_expiredAmount;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -456,8 +460,32 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.expiredBase = p_expiredBase;
+		o.changerUId = env.cEnv.uid();
+		o.changeTs = env.txTime();
+		if (o != this) o.versions.table.index(env, o, 0);
+		return;
+	}
+
+	public Boolean getIgnoreOnRerun (SystemEnvironment env)
+	throws SDMSException
+	{
+		return (ignoreOnRerun);
+	}
+
+	public	void setIgnoreOnRerun (SystemEnvironment env, Boolean p_ignoreOnRerun)
+	throws SDMSException
+	{
+		if(ignoreOnRerun.equals(p_ignoreOnRerun)) return;
+		SDMSResourceRequirementGeneric o = this;
+		if (versions.id.longValue() < SystemEnvironment.SYSTEM_OBJECTS_BOUNDARY) {
+			throw new CommonErrorException(
+			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
+			);
+		}
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		o.ignoreOnRerun = p_ignoreOnRerun;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
 		if (o != this) o.versions.table.index(env, o, 0);
@@ -505,7 +533,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.lockmode = p_lockmode;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -530,7 +558,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		if (p_condition != null && p_condition.length() > 1024) {
 			throw new CommonErrorException (
 			        new SDMSMessage(env, "01112141510",
@@ -560,7 +588,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.creatorUId = p_creatorUId;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -584,7 +612,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(ResourceRequirement) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.createTs = p_createTs;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -602,7 +630,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 	throws SDMSException
 	{
 		SDMSResourceRequirementGeneric o = this;
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.changerUId = p_changerUId;
 		o.changeTs = env.txTime();
 		if (o != this) o.versions.table.index(env, o, 0);
@@ -620,7 +648,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 	{
 		if(changeTs.equals(p_changeTs)) return;
 		SDMSResourceRequirementGeneric o = this;
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSResourceRequirementGeneric) change(env);
 		o.changeTs = p_changeTs;
 		o.changerUId = env.cEnv.uid();
 		if (o != this) o.versions.table.index(env, o, 0);
@@ -669,6 +697,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 	                Long p_rsmpId,
 	                Integer p_expiredAmount,
 	                Integer p_expiredBase,
+	                Boolean p_ignoreOnRerun,
 	                Integer p_lockmode,
 	                String p_condition,
 	                Long p_creatorUId,
@@ -688,6 +717,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 		rsmpId = p_rsmpId;
 		expiredAmount = p_expiredAmount;
 		expiredBase = p_expiredBase;
+		ignoreOnRerun = p_ignoreOnRerun;
 		lockmode = p_lockmode;
 		condition = p_condition;
 		creatorUId = p_creatorUId;
@@ -725,6 +755,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 				        ", " + squote + "RSMP_ID" + equote +
 				        ", " + squote + "EXPIRED_AMOUNT" + equote +
 				        ", " + squote + "EXPIRED_BASE" + equote +
+				        ", " + squote + "IGNORE_ON_RERUN" + equote +
 				        ", " + squote + "LOCKMODE" + equote +
 				        ", " + squote + "CONDITION" + equote +
 				        ", " + squote + "CREATOR_U_ID" + equote +
@@ -733,6 +764,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 				        ", " + squote + "CHANGE_TS" + equote +
 				        ", VALID_FROM, VALID_TO" +
 				        ") VALUES (?" +
+				        ", ?" +
 				        ", ?" +
 				        ", ?" +
 				        ", ?" +
@@ -788,20 +820,21 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 				myInsert.setNull(11, Types.INTEGER);
 			else
 				myInsert.setInt(11, expiredBase.intValue());
+			myInsert.setInt (12, ignoreOnRerun.booleanValue() ? 1 : 0);
 			if (lockmode == null)
-				myInsert.setNull(12, Types.INTEGER);
+				myInsert.setNull(13, Types.INTEGER);
 			else
-				myInsert.setInt(12, lockmode.intValue());
+				myInsert.setInt(13, lockmode.intValue());
 			if (condition == null)
-				myInsert.setNull(13, Types.VARCHAR);
+				myInsert.setNull(14, Types.VARCHAR);
 			else
-				myInsert.setString(13, condition);
-			myInsert.setLong (14, creatorUId.longValue());
-			myInsert.setLong (15, createTs.longValue());
-			myInsert.setLong (16, changerUId.longValue());
-			myInsert.setLong (17, changeTs.longValue());
-			myInsert.setLong(18, env.tx.versionId);
-			myInsert.setLong(19, Long.MAX_VALUE);
+				myInsert.setString(14, condition);
+			myInsert.setLong (15, creatorUId.longValue());
+			myInsert.setLong (16, createTs.longValue());
+			myInsert.setLong (17, changerUId.longValue());
+			myInsert.setLong (18, changeTs.longValue());
+			myInsert.setLong(19, env.tx.versionId);
+			myInsert.setLong(20, Long.MAX_VALUE);
 			myInsert.executeUpdate();
 		} catch(SQLException sqle) {
 			throw new SDMSSQLException(new SDMSMessage(env, "01110181954", "ResourceRequirement: $1 $2", new Integer(sqle.getErrorCode()), sqle.getMessage()));
@@ -909,6 +942,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 		SDMSThread.doTrace(null, "rsmpId : " + rsmpId, SDMSThread.SEVERITY_MESSAGE);
 		SDMSThread.doTrace(null, "expiredAmount : " + expiredAmount, SDMSThread.SEVERITY_MESSAGE);
 		SDMSThread.doTrace(null, "expiredBase : " + expiredBase, SDMSThread.SEVERITY_MESSAGE);
+		SDMSThread.doTrace(null, "ignoreOnRerun : " + ignoreOnRerun, SDMSThread.SEVERITY_MESSAGE);
 		SDMSThread.doTrace(null, "lockmode : " + lockmode, SDMSThread.SEVERITY_MESSAGE);
 		SDMSThread.doTrace(null, "condition : " + condition, SDMSThread.SEVERITY_MESSAGE);
 		SDMSThread.doTrace(null, "creatorUId : " + creatorUId, SDMSThread.SEVERITY_MESSAGE);
@@ -937,6 +971,7 @@ public class SDMSResourceRequirementGeneric extends SDMSObject
 		        indentString + "rsmpId        : " + rsmpId + "\n" +
 		        indentString + "expiredAmount : " + expiredAmount + "\n" +
 		        indentString + "expiredBase   : " + expiredBase + "\n" +
+		        indentString + "ignoreOnRerun : " + ignoreOnRerun + "\n" +
 		        indentString + "lockmode      : " + lockmode + "\n" +
 		        indentString + "condition     : " + condition + "\n" +
 		        indentString + "creatorUId    : " + creatorUId + "\n" +

@@ -43,7 +43,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 	public static final int FULFILLED = 1;
 	public static final int FAILED = 2;
 	public static final int BROKEN = 3;
-	public static final int DEFERED = 4;
+	public static final int DEFERRED = 4;
 	public static final int CANCELLED = 8;
 	public static final int NO = 0;
 	public static final int YES = 1;
@@ -198,7 +198,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyInstance) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
 		o.dependentIdOrig = p_dependentIdOrig;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -238,7 +238,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyInstance) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
 		o.dependencyOperation = p_dependencyOperation;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -296,8 +296,8 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 				return "FAILED";
 			case SDMSDependencyInstance.BROKEN:
 				return "BROKEN";
-			case SDMSDependencyInstance.DEFERED:
-				return "DEFERED";
+			case SDMSDependencyInstance.DEFERRED:
+				return "DEFERRED";
 			case SDMSDependencyInstance.CANCELLED:
 				return "CANCELLED";
 		}
@@ -366,7 +366,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyInstance) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
 		o.ignore = p_ignore;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -421,7 +421,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyInstance) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
 		o.seVersion = p_seVersion;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -445,7 +445,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyInstance) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
 		o.creatorUId = p_creatorUId;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -469,7 +469,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyInstance) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
 		o.createTs = p_createTs;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -487,7 +487,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 	throws SDMSException
 	{
 		SDMSDependencyInstanceGeneric o = this;
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
 		o.changerUId = p_changerUId;
 		o.changeTs = env.txTime();
 		if (o != this) o.versions.table.index(env, o, 0);
@@ -505,7 +505,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 	{
 		if(changeTs.equals(p_changeTs)) return;
 		SDMSDependencyInstanceGeneric o = this;
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyInstanceGeneric) change(env);
 		o.changeTs = p_changeTs;
 		o.changerUId = env.cEnv.uid();
 		if (o != this) o.versions.table.index(env, o, 0);
@@ -771,7 +771,7 @@ public class SDMSDependencyInstanceGeneric extends SDMSObject
 			case SDMSDependencyInstance.FULFILLED:
 			case SDMSDependencyInstance.FAILED:
 			case SDMSDependencyInstance.BROKEN:
-			case SDMSDependencyInstance.DEFERED:
+			case SDMSDependencyInstance.DEFERRED:
 			case SDMSDependencyInstance.CANCELLED:
 				return true;
 		}

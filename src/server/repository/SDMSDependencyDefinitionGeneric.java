@@ -46,6 +46,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 	public static final int SUSPEND = 3;
 	public static final int UH_SUSPEND = 3;
 	public static final int DEFER = 4;
+	public static final int DEFER_IGNORE = 5;
 	public static final int ALL_FINAL = 1;
 	public static final int JOB_FINAL = 2;
 	public static final int FINAL = 0;
@@ -245,6 +246,8 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 				return "SUSPEND";
 			case SDMSDependencyDefinition.DEFER:
 				return "DEFER";
+			case SDMSDependencyDefinition.DEFER_IGNORE:
+				return "DEFER_IGNORE";
 		}
 		throw new FatalException (new SDMSMessage (env,
 		                          "01205252242",
@@ -262,7 +265,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyDefinition) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
 		o.unresolvedHandling = p_unresolvedHandling;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -302,7 +305,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyDefinition) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
 		o.mode = p_mode;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -346,7 +349,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyDefinition) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
 		o.stateSelection = p_stateSelection;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -371,7 +374,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyDefinition) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
 		if (p_condition != null && p_condition.length() > 1024) {
 			throw new CommonErrorException (
 			        new SDMSMessage(env, "01112141510",
@@ -401,7 +404,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyDefinition) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
 		o.creatorUId = p_creatorUId;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -425,7 +428,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 			        new SDMSMessage (env, "02112141636", "(DependencyDefinition) Change of system object not allowed")
 			);
 		}
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
 		o.createTs = p_createTs;
 		o.changerUId = env.cEnv.uid();
 		o.changeTs = env.txTime();
@@ -443,7 +446,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 	throws SDMSException
 	{
 		SDMSDependencyDefinitionGeneric o = this;
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
 		o.changerUId = p_changerUId;
 		o.changeTs = env.txTime();
 		if (o != this) o.versions.table.index(env, o, 0);
@@ -461,7 +464,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 	{
 		if(changeTs.equals(p_changeTs)) return;
 		SDMSDependencyDefinitionGeneric o = this;
-		if (o.versions.o_v == null || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
+		if (o.versions.o_v == null || o.versions.o_v.size() == 0 || o.subTxId != env.tx.subTxId) o = (SDMSDependencyDefinitionGeneric) change(env);
 		o.changeTs = p_changeTs;
 		o.changerUId = env.cEnv.uid();
 		if (o != this) o.versions.table.index(env, o, 0);
@@ -662,6 +665,7 @@ public class SDMSDependencyDefinitionGeneric extends SDMSObject
 			case SDMSDependencyDefinition.ERROR:
 			case SDMSDependencyDefinition.SUSPEND:
 			case SDMSDependencyDefinition.DEFER:
+			case SDMSDependencyDefinition.DEFER_IGNORE:
 				return true;
 		}
 		return false;

@@ -45,6 +45,7 @@ public class SDMSDependencyDefinitionProxyGeneric extends SDMSProxy
 	public static final int SUSPEND = 3;
 	public static final int UH_SUSPEND = 3;
 	public static final int DEFER = 4;
+	public static final int DEFER_IGNORE = 5;
 	public static final int ALL_FINAL = 1;
 	public static final int JOB_FINAL = 2;
 	public static final int FINAL = 0;
@@ -329,6 +330,41 @@ public class SDMSDependencyDefinitionProxyGeneric extends SDMSProxy
 		touchMaster(env);
 		((SDMSDependencyDefinitionGeneric)(object)).set_SeDependentIdSeRequiredId (env, p_seDependentId, p_seRequiredId);
 		return (SDMSDependencyDefinition)this;
+	}
+
+	public SDMSKey getSortKey(SystemEnvironment sysEnv)
+	throws SDMSException
+	{
+		SDMSKey s = null;
+		Long myId = getId(sysEnv);
+		if (sysEnv.tx.sortKeyMap == null)
+			sysEnv.tx.sortKeyMap = new HashMap();
+		else
+			s = (SDMSKey) sysEnv.tx.sortKeyMap.get(myId);
+		if (s != null) return s;
+		boolean gotIt = false;
+		s = new SDMSKey();
+
+		gotIt = false;
+		Long seDependentId = getSeDependentId(sysEnv);
+		if (!gotIt)
+			try {
+				s.add(SDMSSchedulingEntityTable.getObject(sysEnv, seDependentId).getSortKey(sysEnv));
+				gotIt = true;
+			} catch (NotFoundException nfe) {
+			}
+
+		gotIt = false;
+		Long seRequiredId = getSeRequiredId(sysEnv);
+		if (!gotIt)
+			try {
+				s.add(SDMSSchedulingEntityTable.getObject(sysEnv, seRequiredId).getSortKey(sysEnv));
+				gotIt = true;
+			} catch (NotFoundException nfe) {
+			}
+
+		sysEnv.tx.sortKeyMap.put(myId, s);
+		return s;
 	}
 
 	public void delete (SystemEnvironment env)
